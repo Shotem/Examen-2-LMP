@@ -9,33 +9,50 @@ import { CallAPIService } from 'src/services/call-api.service';
 export class Tab1Component implements OnInit {
   title = 'tarea-n5';
   @Input() name: string;
-  people: Person[];
+  people: Person[] = [];
   cookie: string;
+  firstSearch: boolean = false;
 
   constructor(private api_service: CallAPIService) {
     this.cookie = document.cookie;
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   async callAPI() {
-    let data = await this.api_service.call(this.name);
-    this.people = data.results;
+    let data: any;
+    try {
+      data = await this.api_service.call(this.name);
+      this.people = data.results;
+    } catch (exception){
+      console.error(exception);
+    }
+    this.firstSearch = true;
+    
+  }
+
+  feelingLucky() : void{
+    this.callAPI()
+    this.select(this.people[0]);
+    this.people = [];
+    this.firstSearch = false;
   }
 
   select(person: Person) {
-    if (this.setCookie(person)) {
-      console.log(document.cookie);
-    }
+    
+    this.setCookie(person)
+    // Agregar a la base de datos
+    console.log(document.cookie);
+    
   }
 
   setCookie(person: Person): boolean {
+
     let today = new Date();
     let twoDaysFromToday = new Date(today.setDate(today.getDate() + 2));
     document.cookie = "name=" + person.name + ";SameSite=strict;expires=" + twoDaysFromToday;
     this.people = [];
+
     return true;
   }
 
@@ -46,7 +63,7 @@ export class Tab1Component implements OnInit {
   resetCookie() : boolean {
     let today = new Date();
     let yesterday = new Date( today.setDate(today.getDate() - 1 ));
-    document.cookie = "name=;SameSite=strict;expires="+ yesterday;
+    document.cookie = "name=;SameSite=strict;expires=" + yesterday;
     return true;
   }
 }

@@ -1,12 +1,37 @@
 <div class="content" role="main">
 
-    <h1> Busque el personaje de Star Wars </h1>
-    <input type="text" [(ngModel)]="name" value="Luke">
-    <button (click)=callAPI()>Buscar</button>
+    <div class = "row justify-content-center">
+      <h3> Busque el personaje de Star Wars </h3>
+    </div>
+    
+    <div class = "row justify-content-center">
+      <input type="text" [(ngModel)]="name" value="Luke">
+      
+    </div>
+    <div class = "row justify-content-center">
+      <div class="col-2 justify-content-end">
+        <button class="search-button" (click)="callAPI()">Buscar</button>
+      </div>
+      <div class="col-2 justify-content-start">
+        <button class="search-button" (click)="feelingLucky()">Me siento con suerte</button>
+      </div>
+    </div>
     <br>
-  
-    <div *ngFor="let person of people" id="select_person">
-      <a href={{person.url}}>{{person.name}}</a>  <button (click)="select(person)">Selecionar</button>
+
+
+    <div *ngIf="people.length === 0 && firstSearch">
+      La búsqueda no dio resultados.
+      Intenta de nuevo con otro nombre.
+    </div>
+    <div *ngFor="let person of people" id="select_person" class="row justify-content-center api-result-row">
+      
+        <div class="col-3">
+          <a href={{person.url}}>{{person.name}}</a>
+        </div>
+        <div class="col-3">
+          <button (click)="select(person)">Selecionar</button>
+        </div>
+
     </div>
 
     <div *ngIf="getCookie() !== ''" id="reset_id">

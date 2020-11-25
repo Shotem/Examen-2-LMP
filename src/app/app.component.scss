@@ -1,0 +1,29 @@
+/*
+header {
+    margin: auto;
+    width: 30%;
+}
+*/
+$margin-size: 10px;
+//@debug 100% + 2*$margin-size;
+
+
+.title {
+    font-size: auto;
+}
+
+header {
+    margin: 10px 0px;
+    text-align: center;
+    background-color: lightgray;
+}
+
+button {
+    padding: 10px;
+    border-style: solid;
+    border-color: transparent;
+    background-color: rgb(1, 144, 1);
+    color: white;
+    text-align: center;
+    margin: 10px;
+}

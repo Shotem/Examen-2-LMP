@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "Examen2LMP"
+    }
+  },
+  "defaultProject": "Examen2LMP",
+  "cli": {
+    "analytics": false
+  }
 }
