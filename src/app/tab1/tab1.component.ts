@@ -13,8 +13,8 @@ export class Tab1Component implements OnInit {
 
   people: Person[] = [];
   display: boolean;
+  noResults: boolean = false;
   cookie: string;
-  firstSearch: boolean = false;
 
   constructor(private api_service: CallAPIService) {
     this.cookie = document.cookie;
@@ -28,9 +28,9 @@ export class Tab1Component implements OnInit {
     this.people = [];
   }
 
-  feelingLucky() : void{
+  async feelingLucky() : Promise<void>{
     this.display=false;
-    this.callAPI();
+    await this.callAPI();
     if (this.people && this.people.length > 0){
       console.log("Automatic selection taking place");
       this.select(this.people[0]);
@@ -38,33 +38,32 @@ export class Tab1Component implements OnInit {
     this.people = [];
   }
 
-  async callAPI() {
+  async callAPI() : /*Por mucho que me moleste, tiene que devolver*/ Promise<void>{
     console.log("Calling API...");
 
-    await this.api_service.call(this.name).then(
+    await this.api_service.call(this.name).then( // Threading
     (data) =>{                // Lambda
       this.people = data.results;
+      this.noResults = (this.people.length === 0);
       console.log("Data retrieved successfully");
       console.log(this.people);
     },
     (error)=>{                // Lamda, Exception Handling
       this.people = [];
       alert(error);
-      console.error(error);
+      console.warn(error);
     })
-    
-    this.firstSearch = true;
   }
 
-  select(person: Person) {
+  select(person: Person) :void {
     console.log("Selection taking place");
     this.setCookie(person)
-    // Agregar a la base de datos
+    // Incoming: Database Managment via ORM
     console.log(document.cookie);
     
   }
 
-  setCookie(person: Person) {         // Cookie creation
+  setCookie(person: Person) : void {         // Cookie creation
     let today = new Date();
     let twoDaysFromToday = new Date(today.setDate(today.getDate() + 2));
     document.cookie = "name=" + person.name + ";SameSite=strict;expires=" + twoDaysFromToday;
@@ -75,10 +74,9 @@ export class Tab1Component implements OnInit {
     return document.cookie;
   }
   
-  resetCookie() : boolean {         // Cookie removal
+  resetCookie() : void {         // Cookie removal
     let today = new Date();
     let yesterday = new Date( today.setDate(today.getDate() - 1 ));
     document.cookie = "name=;SameSite=strict;expires=" + yesterday;
-    return true;
   }
 }
