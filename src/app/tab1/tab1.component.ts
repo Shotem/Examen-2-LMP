@@ -7,9 +7,12 @@ import { CallAPIService } from 'src/services/call-api.service';
   styleUrls: ['./tab1.component.scss']
 })
 export class Tab1Component implements OnInit {
-  title = 'tarea-n5';
+
+  title = 'Examen 2 - Lenguajes Modernos de Programación';
   @Input() name: string;
+
   people: Person[] = [];
+  display: boolean;
   cookie: string;
   firstSearch: boolean = false;
 
@@ -19,48 +22,60 @@ export class Tab1Component implements OnInit {
 
   ngOnInit(): void {}
 
-  async callAPI() {
-    let data: any;
-    try {
-      data = await this.api_service.call(this.name);
-      this.people = data.results;
-    } catch (exception){
-      console.error(exception);
-    }
-    this.firstSearch = true;
-    
+  search() {
+    this.display = true;
+    this.callAPI();
+    this.people = [];
   }
 
   feelingLucky() : void{
-    this.callAPI()
-    this.select(this.people[0]);
+    this.display=false;
+    this.callAPI();
+    if (this.people && this.people.length > 0){
+      console.log("Automatic selection taking place");
+      this.select(this.people[0]);
+    }
     this.people = [];
-    this.firstSearch = false;
+  }
+
+  async callAPI() {
+    console.log("Calling API...");
+
+    await this.api_service.call(this.name).then(
+    (data) =>{                // Lambda
+      this.people = data.results;
+      console.log("Data retrieved successfully");
+      console.log(this.people);
+    },
+    (error)=>{                // Lamda, Exception Handling
+      this.people = [];
+      alert(error);
+      console.error(error);
+    })
+    
+    this.firstSearch = true;
   }
 
   select(person: Person) {
-    
+    console.log("Selection taking place");
     this.setCookie(person)
     // Agregar a la base de datos
     console.log(document.cookie);
     
   }
 
-  setCookie(person: Person): boolean {
-
+  setCookie(person: Person) {         // Cookie creation
     let today = new Date();
     let twoDaysFromToday = new Date(today.setDate(today.getDate() + 2));
     document.cookie = "name=" + person.name + ";SameSite=strict;expires=" + twoDaysFromToday;
-    this.people = [];
-
-    return true;
+    
   }
 
   getCookie() :string {
     return document.cookie;
   }
   
-  resetCookie() : boolean {
+  resetCookie() : boolean {         // Cookie removal
     let today = new Date();
     let yesterday = new Date( today.setDate(today.getDate() - 1 ));
     document.cookie = "name=;SameSite=strict;expires=" + yesterday;

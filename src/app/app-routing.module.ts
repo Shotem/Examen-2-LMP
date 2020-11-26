@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'tabinicio', component: TabinicioComponent },
   { path: 'tab1', component: Tab1Component },
   { path: 'tab2', component: Tab2Component },
-  { path: "", redirectTo: "\tab1", pathMatch: "full" }
+  { path: "", redirectTo: "tabinicio", pathMatch: "full" }
 ];
 
 @NgModule({
