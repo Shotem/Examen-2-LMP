@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { Tab1Component } from './tab1/tab1.component';
-import { Tab2Component } from './tab2/tab2.component';
 import { TabinicioComponent } from './tabinicio/tabinicio.component';
 import { FormsModule } from '@angular/forms';
 
@@ -12,7 +11,6 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     Tab1Component,
-    Tab2Component,
     TabinicioComponent
   ],
   imports: [

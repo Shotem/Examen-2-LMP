@@ -23,6 +23,20 @@
       La búsqueda no dio resultados.
       Intenta de nuevo con otro nombre.
     </div>
+
+    
+      <div *ngIf="getCookie() !== ''" id="reset_id">
+        <div class="row justify-content-center">
+          <p>La cookie actual es "{{getCookie()}}"</p>  
+        </div>
+        <div class="row justify-content-center">
+          <button (click)="resetCookie()">Reset Cookie</button>
+        </div>
+      </div>
+
+      <div *ngIf="getCookie() === ''" id="reset_id" class="row justify-content-center">
+          <p>Parece que actualmente no hay una cookie guardada</p>
+      </div>
     
     <div *ngIf="display">
       <div *ngFor="let person of people" class="row justify-content-center api-result-row">
@@ -34,15 +48,6 @@
           <button (click)="select(person)">Selecionar</button>
         </div>
       </div>
-    </div>
-    
-
-    <div *ngIf="getCookie() !== ''" id="reset_id">
-        <p>La cookie actual es "{{getCookie()}}"</p>
-        <button (click)="resetCookie()">Reset Cookie</button>
-    </div>
-    <div *ngIf="getCookie() === ''" id="reset_id">
-        <p>Parece que actualmente no hay una cookie guardada</p>
     </div>
   
   </div>
